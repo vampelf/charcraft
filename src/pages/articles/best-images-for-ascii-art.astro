@@ -1,0 +1,68 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+---
+
+<ArticleLayout 
+  title="Best Images for ASCII Art Conversion" 
+  description="Practical advice on selecting, editing, and prepping photos to achieve high-quality ASCII and Braille text conversions."
+  publishDate="July 3, 2026"
+  readTime="5 min read"
+>
+  <p>
+    Have you ever uploaded a photo to an ASCII generator only to receive a messy, unrecognizable block of text? You are not alone. Text art conversion maps continuous-tone images to discrete characters. Some images translate beautifully, while others result in digital noise.
+  </p>
+  <p>
+    This guide highlights the features that make an image ideal for conversion and outlines steps you can take to prepare your graphics for the best output.
+  </p>
+
+  <h2>1. High contrast is essential</h2>
+  <p>
+    Because text art relies on characters of varying densities to represent shadows and highlights, contrast is the single most important factor.
+  </p>
+  <ul>
+    <li><strong>Good:</strong> Portrait photos with strong side-lighting, logos on solid backgrounds, and clear silhouettes.</li>
+    <li><strong>Bad:</strong> Soft, low-contrast photos taken in overcast weather or flat indoor lighting.</li>
+  </ul>
+  <p>
+    <em>Tip:</em> Use CharCraft's built-in **Contrast slider** to increase the difference between shadows and highlights. This sharpens edges and makes the text rendering stand out.
+  </p>
+
+  <h2>2. Clean and simple backgrounds</h2>
+  <p>
+    Generators convert background pixels into characters just like foreground pixels. If your subject is in front of a busy bookshelf, a brick wall, or a detailed landscape, those details will clutter the output.
+  </p>
+  <p>
+    For the cleanest results, use images with:
+  </p>
+  <ul>
+    <li>Solid black or white backgrounds.</li>
+    <li>Transparent PNG backdrops (CharCraft automatically treats transparent areas as empty space).</li>
+    <li>Out-of-focus backgrounds (depth of field) where the background is smooth and lacks fine details.</li>
+  </ul>
+
+  <h2>3. Bold, defined lines</h2>
+  <p>
+    If you are converting illustrations, typography, or logos:
+  </p>
+  <ul>
+    <li>Bold line weights translate far better than thin, delicate lines.</li>
+    <li>Small text in logos will often become unreadable unless you set a very large output width (columns).</li>
+    <li>Iconography and simplified vector symbols are perfect candidates for **Braille Art mode** due to its micro-dot layout.</li>
+  </ul>
+
+  <h2>4. Resolution and scaling considerations</h2>
+  <p>
+    Since your final output is limited by the number of columns (typically 80 to 150 characters for readability), the image will be severely downscaled.
+  </p>
+  <p>
+    When an image is shrunk from 3000 pixels to 80 pixels wide, fine details are lost. Thus, close-up portraits, single objects, and simple shapes look far superior to wide-angle landscape shots or group photos of many people.
+  </p>
+
+  <h2>Summary Checklist for Perfect Outputs</h2>
+  <ol>
+    <li>Choose a close-up, simple subject.</li>
+    <li>Ensure the background is solid or transparent.</li>
+    <li>Bump the **Contrast** slider up by 15-30% in the generator if details look washed out.</li>
+    <li>Invert colors if your target destination (like GitHub or a terminal) uses a dark background and your source image has a light backdrop.</li>
+  </ol>
+</ArticleLayout>

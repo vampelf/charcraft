@@ -1,0 +1,53 @@
+---
+interface Props {
+  activePath?: string;
+}
+
+const { activePath = "" } = Astro.props;
+
+// Helper to determine if link is active
+const isActive = (path: string) => {
+  if (path === "" && activePath === "") return true;
+  if (path !== "" && activePath.includes(path)) return true;
+  return false;
+};
+---
+
+<header class="site-header">
+  <div class="container nav-container">
+    <a href="/charcraft/" class="logo">
+      <span>🎨</span> CharCraft
+    </a>
+    
+    <nav>
+      <ul class="nav-links">
+        <li>
+          <a href="/charcraft/" class={`nav-link ${isActive("") ? "active" : ""}`}>
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="/charcraft/ascii-generator" class={`nav-link ${isActive("ascii-generator") ? "active" : ""}`}>
+            ASCII Art
+          </a>
+        </li>
+        <li>
+          <a href="/charcraft/braille-generator" class={`nav-link ${isActive("braille-generator") ? "active" : ""}`}>
+            Braille Art
+          </a>
+        </li>
+        <li>
+          <a href="/charcraft/combined-generator" class={`nav-link ${isActive("combined-generator") ? "active" : ""}`}>
+            Combined
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div>
+      <a href="/charcraft/combined-generator" class="cta-btn">
+        Launch App
+      </a>
+    </div>
+  </div>
+</header>

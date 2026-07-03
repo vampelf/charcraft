@@ -1,0 +1,165 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Contact Us | CharCraft" description="Get in touch with the CharCraft team for feedback, feature requests, or support.">
+  <div class="content-container">
+    <div class="header-section">
+      <h1>Contact <span class="gradient-text">Us</span></h1>
+      <p class="subtitle">Have feedback, bug reports, or feature ideas? Let us know!</p>
+    </div>
+
+    <div class="glass-card contact-body">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p>
+            CharCraft is an active open-source project. We appreciate the community sharing ideas for new generators (such as ANSI art, block characters, etc.) and reporting any issues.
+          </p>
+          
+          <div class="info-item">
+            <span class="info-icon">📧</span>
+            <div>
+              <strong>Email Support</strong>
+              <p><a href="mailto:support@charcraft.example.com" class="contact-link">support@charcraft.example.com</a></p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">💻</span>
+            <div>
+              <strong>Open Source & Bugs</strong>
+              <p>
+                Report issues on our GitHub Issues page:
+                <br />
+                <a href="https://github.com/vampe/charcraft/issues" target="_blank" rel="noopener noreferrer" class="contact-link">
+                  github.com/vampe/charcraft/issues
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-dummy">
+          <h3>Send Feedback Directly</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Fill out this quick client-side helper to draft an email using your default mail client.
+          </p>
+          
+          <form id="dummy-contact-form">
+            <div class="form-group">
+              <label class="form-label" for="form-name">Your Name</label>
+              <input type="text" id="form-name" class="text-input" placeholder="John Doe" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-msg">Message / Suggestion</label>
+              <textarea id="form-msg" class="text-input" rows="4" placeholder="I would love to see an ANSI art generator..." required style="resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-accent" style="width: 100%;">Draft Email &rarr;</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  const form = document.getElementById('dummy-contact-form');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('form-name') as HTMLInputElement).value;
+      const msg = (document.getElementById('form-msg') as HTMLTextAreaElement).value;
+      
+      const subject = encodeURIComponent('CharCraft Feedback');
+      const body = encodeURIComponent(`Hi CharCraft Team,\n\nMy name is ${name}.\n\nHere is my feedback:\n${msg}\n\nSent via CharCraft Contact Form.`);
+      
+      window.location.href = `mailto:support@charcraft.example.com?subject=${subject}&body=${body}`;
+    });
+  }
+</script>
+
+<style>
+  .content-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem 0 3rem 0;
+  }
+
+  .header-section {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
+  }
+
+  .contact-body {
+    padding: 2.5rem;
+    border-color: var(--border-color);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .contact-info h2 {
+    font-size: 1.4rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-info p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .info-icon {
+    font-size: 1.5rem;
+  }
+
+  .contact-link {
+    color: var(--secondary);
+    text-decoration: underline;
+  }
+
+  .contact-link:hover {
+    color: var(--secondary-hover);
+  }
+
+  .contact-form-dummy h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+</style>

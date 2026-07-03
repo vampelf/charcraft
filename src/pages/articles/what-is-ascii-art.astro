@@ -1,0 +1,67 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+---
+
+<ArticleLayout 
+  title="What is ASCII Art? The History of Text Art" 
+  description="Explore the history, culture, and concepts behind ASCII text art, from typewriter origins to digital BBS networks."
+  publishDate="July 3, 2026"
+  readTime="5 min read"
+>
+  <p>
+    <strong>ASCII art</strong> is a graphic design technique that uses computer characters from the ASCII (American Standard Code for Information Interchange) standard to form visual shapes, patterns, and representations. Essentially, it is the art of drawing with text.
+  </p>
+
+  <h2>Origins: Typewriters and Telegraphy</h2>
+  <p>
+    While computer ASCII art became popular in the 1970s and 1980s, the concept of drawing with text dates back much further. In the late 19th century, people used typewriters to create intricate visual patterns. The oldest known typewriter art dates back to 1898, created by Flora Stacey.
+  </p>
+  <p>
+    Later, during the mid-20th century, teletypewriter networks (like Telex) used characters to transmit images over wire lines. These early visual transmissions laid the foundation for the character art that would emerge with the personal computer revolution.
+  </p>
+
+  <h2>The computer age and BBS networks</h2>
+  <p>
+    With the introduction of the ASCII character set in 1963, computers gained a standardized system for representing 128 characters. During the early days of personal computers (the 1970s and 1980s), screen resolutions were low, and graphic adapters were expensive or nonexistent. The primary way to output data was text terminals.
+  </p>
+  <p>
+    This technical limitation birthed a thriving digital culture centered around Bulletin Board Systems (BBS). BBS sysops (system operators) used ASCII characters to create:
+  </p>
+  <ul>
+    <li>Stunning login screens and welcome banners.</li>
+    <li>Interface buttons and navigation layouts.</li>
+    <li>Visual representations of files and directories (NFO files).</li>
+  </ul>
+
+  <blockquote>
+    <p>"Limits invite creation. The text-only nature of early computers forced artists to innovate using only the characters at their fingertips."</p>
+  </blockquote>
+
+  <h2>Standard ASCII vs. Extended Block Art</h2>
+  <p>
+    As computer screens evolved, two distinct forms of text art emerged:
+  </p>
+  <ol>
+    <li>
+      <strong>Standard ASCII Art:</strong> Uses only the basic 95 printable characters (letters, numbers, punctuation symbols) within the 7-bit ASCII range (codepoints 32 to 126). This art is highly portable and renders correctly on almost any terminal or text editor.
+    </li>
+    <li>
+      <strong>ANSI / Block Art:</strong> Uses extended ASCII character sets (like IBM Codepage 437) containing block characters (?? ?? ?? ?? and colored control codes (ANSI escape sequences). This style resembles pixel art and is common in the retro computing scene.
+    </li>
+  </ol>
+
+  <h2>How Automatic Generators Work</h2>
+  <p>
+    Early text art was drawn entirely by hand. However, as processing power grew, developers built algorithms to automate the conversion. A generator processes an image by:
+  </p>
+  <ol>
+    <li>Resizing the image to a low resolution (representing character columns).</li>
+    <li>Converting the pixels to grayscale (calculating luminance values).</li>
+    <li>Mapping each pixel's brightness to a matching character from a "density ramp" (e.g., spaces for white background pixels, and dense symbols like <code>@</code> or <code>#</code> for dark shadow pixels).</li>
+  </ol>
+
+  <h2>Modern Rebirth: GitHub and Discord</h2>
+  <p>
+    Today, text art remains highly relevant. Developers use ASCII art generators to create repository banners for their <code>README.md</code> files, print custom branding in command-line tools (CLI) upon startup, and share text patterns in chat systems like Discord or Slack where rich media uploads are not always desired.
+  </p>
+</ArticleLayout>

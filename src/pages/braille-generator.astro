@@ -1,0 +1,37 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Generator from '../components/Generator.astro';
+---
+
+<MainLayout 
+  title="Braille Art Generator - Convert Image to Unicode Dots | CharCraft" 
+  description="Convert your images and icons into high-fidelity Unicode Braille dot patterns. Perfect for README files, terminal art, and high-density text displays."
+  activePath="braille-generator"
+>
+  <div class="tool-page-header">
+    <h1>Image to <span class="gradient-text">Braille Art</span> Generator</h1>
+    <p class="subtitle">Convert photos into high-resolution Braille unicode dot glyph matrix art. Works client-side in seconds.</p>
+  </div>
+
+  <Generator mode="braille" />
+</MainLayout>
+
+<style>
+  .tool-page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
+  }
+</style>

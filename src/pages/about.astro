@@ -1,0 +1,120 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="About Us | CharCraft" description="Learn about CharCraft, a free, 100% private, browser-only image to ASCII and Braille art generator website.">
+  <div class="content-container">
+    <div class="header-section">
+      <h1>About <span class="gradient-text">CharCraft</span></h1>
+      <p class="subtitle">Our mission, technology, and commitment to user privacy.</p>
+    </div>
+
+    <div class="glass-card about-body">
+      <section class="about-section">
+        <h2>What is CharCraft?</h2>
+        <p>
+          CharCraft is a high-performance, web-based image-to-text conversion suite. We designed it for developers, digital artists, terminal geeks, and content creators who want to convert photos, logos, or screenshots into stylized plain-text representations like ASCII art and Unicode Braille matrices.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>🔒 100% Client-Side Privacy</h2>
+        <p>
+          Unlike other online generators that upload your images to third-party servers, **CharCraft processes everything directly in your browser**.
+        </p>
+        <p>
+          We utilize the HTML Canvas API and standard browser JavaScript/TypeScript execution. This guarantees that:
+        </p>
+        <ul>
+          <li>Your photos **never** leave your local computer.</li>
+          <li>No server-side database records your images.</li>
+          <li>The tool operates completely offline once the static website assets are loaded.</li>
+          <li>No subscription, no email signups, and no data tracking.</li>
+        </ul>
+      </section>
+
+      <section class="about-section">
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>ASCII Art Generator:</strong> Custom mapping of image luminance to multi-density character ramps, preserving width and vertical proportions.</li>
+          <li><strong>Braille Art Generator:</strong> Unicode dot cell grouping (2x4 pixels) that generates sharp, high-density line drawings and contours.</li>
+          <li><strong>Real-time Controls:</strong> Instant sliders to adjust brightness, contrast, invert luminance, scale columns width, and adjust preview fonts.</li>
+          <li><strong>Export Options:</strong> Instant clipboard copy, plain text (.txt) downloads, and colorized HTML (.html) downloads for styling in websites or articles.</li>
+        </ul>
+      </section>
+
+      <section class="about-section">
+        <h2>Open Source & Static</h2>
+        <p>
+          CharCraft is built using <strong>Astro</strong>, <strong>TypeScript</strong>, and <strong>Vanilla CSS</strong>. It compiles to static files, making it lightweight, fast-loading, and perfect for static hosting solutions like GitHub Pages.
+        </p>
+      </section>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .content-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem 0 3rem 0;
+  }
+
+  .header-section {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
+  }
+
+  .about-body {
+    padding: 2.5rem;
+    border-color: var(--border-color);
+  }
+
+  .about-section {
+    margin-bottom: 2rem;
+  }
+
+  .about-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-section h2 {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-section p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .about-section ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-section li {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+</style>

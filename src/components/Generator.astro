@@ -1,0 +1,713 @@
+---
+
+interface Props {
+  mode?: 'ascii' | 'braille' | 'combined';
+}
+
+const { mode = 'combined' } = Astro.props;
+---
+
+<div class="generator-container">
+  <!-- Left Side: Upload and Settings Panel -->
+  <div class="controls-side glass-card">
+    <h3 style="margin-top: 0; margin-bottom: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; font-size: 1.3rem;">
+      <span>⚙️</span> Generator Controls
+    </h3>
+
+    <!-- Drag & Drop Zone -->
+    <div id="dropzone" class="upload-zone">
+      <div class="upload-icon">📁</div>
+      <p class="upload-text">Drag & drop your image here or <span class="browse-link">browse</span></p>
+      <p class="upload-subtext">Supports PNG, JPG, WEBP</p>
+      <input type="file" id="file-input" accept="image/*" style="display: none;" />
+    </div>
+
+    <!-- Image Preview (hidden initially) -->
+    <div id="source-preview-container" class="source-preview-container" style="display: none;">
+      <div class="preview-header">
+        <span>Original Image Preview</span>
+        <button id="btn-remove-image" class="remove-img-btn">&times; Remove</button>
+      </div>
+      <img id="source-preview" src="" alt="Source preview" />
+      <div id="image-dimensions" class="dimensions-tag">0 x 0 px</div>
+    </div>
+
+    <!-- Controls Form -->
+    <div id="controls-form" class="controls-form disabled">
+      <!-- Mode Selection (visible only for combined) -->
+      {mode === 'combined' ? (
+        <div class="form-group">
+          <label class="form-label" for="select-mode">Output Mode</label>
+          <select id="select-mode" class="select-input">
+            <option value="ascii">ASCII Art</option>
+            <option value="braille" selected>Braille Art</option>
+          </select>
+        </div>
+      ) : (
+        <input type="hidden" id="select-mode" value={mode} />
+      )}
+
+      <!-- Width Columns -->
+      <div class="form-group">
+        <label class="form-label" for="slider-width">
+          Columns (Width)
+          <span id="display-width" class="value-display">100</span>
+        </label>
+        <input type="range" id="slider-width" class="range-slider" min="20" max="240" step="2" value="100" />
+      </div>
+
+      <!-- Brightness -->
+      <div class="form-group">
+        <label class="form-label" for="slider-brightness">
+          Brightness
+          <span id="display-brightness" class="value-display">0</span>
+        </label>
+        <input type="range" id="slider-brightness" class="range-slider" min="-100" max="100" step="1" value="0" />
+      </div>
+
+      <!-- Contrast -->
+      <div class="form-group">
+        <label class="form-label" for="slider-contrast">
+          Contrast
+          <span id="display-contrast" class="value-display">0</span>
+        </label>
+        <input type="range" id="slider-contrast" class="range-slider" min="-100" max="100" step="1" value="0" />
+      </div>
+
+      <!-- Invert Colors -->
+      <div class="switch-group">
+        <span class="switch-label">Invert Luminance / Colors</span>
+        <label class="switch-control">
+          <input type="checkbox" id="check-invert" />
+          <span class="slider-round"></span>
+        </label>
+      </div>
+
+      <!-- Preserve Aspect Ratio (ASCII only) -->
+      <div class="switch-group" id="group-aspect-ratio">
+        <span class="switch-label">Preserve Visual Aspect</span>
+        <label class="switch-control">
+          <input type="checkbox" id="check-aspect" checked />
+          <span class="slider-round"></span>
+        </label>
+      </div>
+
+      <!-- Color Output Switch -->
+      <div class="switch-group">
+        <span class="switch-label">Color Output (HTML)</span>
+        <label class="switch-control">
+          <input type="checkbox" id="check-color" />
+          <span class="slider-round"></span>
+        </label>
+      </div>
+
+      <!-- Braille Specific: Threshold Slider -->
+      <div class="form-group" id="group-braille-threshold">
+        <label class="form-label" for="slider-threshold">
+          Dot Contrast Threshold
+          <span id="display-threshold" class="value-display">127</span>
+        </label>
+        <input type="range" id="slider-threshold" class="range-slider" min="10" max="245" step="5" value="127" />
+      </div>
+
+      <!-- ASCII Specific: Character Ramp Selection -->
+      <div class="form-group" id="group-ascii-ramp" style="display: none;">
+        <label class="form-label" for="select-ramp">Character Density</label>
+        <select id="select-ramp" class="select-input">
+          <option value="simple">Simple Ramp (10 characters)</option>
+          <option value="standard" selected>Standard Ramp (69 characters)</option>
+          <option value="detailed">Detailed Ramp (73 characters)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Live Monospace Output Panel -->
+  <div class="preview-side glass-card">
+    <div class="output-header">
+      <h3 style="margin: 0; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; font-size: 1.3rem;">
+        <span>🖼️</span> Generated Text Art
+      </h3>
+      
+      <!-- Output Actions -->
+      <div class="action-buttons">
+        <button id="btn-copy" class="btn btn-secondary btn-sm" title="Copy text to clipboard">
+          <span class="icon">📋</span> Copy
+        </button>
+        <button id="btn-download" class="btn btn-secondary btn-sm" title="Download as .txt file">
+          <span class="icon">💾</span> Download
+        </button>
+        <button id="btn-zoom-out" class="btn btn-secondary btn-sm btn-icon-only" title="Zoom Out font">A-</button>
+        <button id="btn-zoom-in" class="btn btn-secondary btn-sm btn-icon-only" title="Zoom In font">A+</button>
+        <button id="btn-reset" class="btn btn-secondary btn-sm" title="Clear and Reset">
+          <span>🔄</span> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Output Box -->
+    <div class="output-wrapper">
+      <div id="output-placeholder" class="output-placeholder">
+        <p>Please upload an image to generate text art.</p>
+      </div>
+      <pre id="output-canvas" class="output-pre" style="font-size: 8px; line-height: 1.0; display: none;"></pre>
+    </div>
+  </div>
+</div>
+
+<style>
+  .generator-container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .generator-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Left controls side */
+  .controls-side {
+    padding: 1.5rem;
+    border-color: var(--border-color);
+  }
+
+  .upload-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: 0.75rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: rgba(10, 10, 12, 0.3);
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--primary);
+    background: rgba(139, 92, 246, 0.05);
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .upload-text {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .browse-link {
+    color: var(--secondary);
+    text-decoration: underline;
+  }
+
+  .upload-subtext {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .source-preview-container {
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .remove-img-btn {
+    background: none;
+    border: none;
+    color: var(--accent-red);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .remove-img-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+  }
+
+  #source-preview {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+  }
+
+  .dimensions-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+
+  .controls-form.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* Right output side */
+  .preview-side {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 580px;
+    padding: 1.5rem;
+    border-color: var(--border-color);
+  }
+
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 0.35rem;
+  }
+
+  .btn-icon-only {
+    padding: 0.4rem 0.6rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .output-wrapper {
+    flex: 1;
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    background: hsl(240, 15%, 2%);
+    min-height: 450px;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .output-placeholder {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .output-pre {
+    font-family: var(--font-mono);
+    color: var(--text-main);
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 1.5rem;
+    white-space: pre;
+    overflow: visible;
+    text-align: left;
+    user-select: all;
+  }
+</style>
+
+<script>
+  import { loadImageFromFile, getAdjustedImageData } from '../utils/imageProcessor';
+  import { convertToAscii } from '../utils/asciiConverter';
+  import { convertToBraille } from '../utils/brailleConverter';
+
+  // State
+  let loadedImage: HTMLImageElement | null = null;
+  let currentOutputText = '';
+  let isProcessing = false;
+  let currentFontSize = 8; // default font size in pixels
+
+  // DOM Elements
+  const dropzone = document.getElementById('dropzone') as HTMLDivElement;
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const controlsForm = document.getElementById('controls-form') as HTMLDivElement;
+  const previewContainer = document.getElementById('source-preview-container') as HTMLDivElement;
+  const sourcePreview = document.getElementById('source-preview') as HTMLImageElement;
+  const btnRemoveImage = document.getElementById('btn-remove-image') as HTMLButtonElement;
+  const imgDimensions = document.getElementById('image-dimensions') as HTMLDivElement;
+  
+  const selectMode = document.getElementById('select-mode') as HTMLSelectElement;
+  const sliderWidth = document.getElementById('slider-width') as HTMLInputElement;
+  const displayWidth = document.getElementById('display-width') as HTMLSpanElement;
+  
+  const sliderBrightness = document.getElementById('slider-brightness') as HTMLInputElement;
+  const displayBrightness = document.getElementById('display-brightness') as HTMLSpanElement;
+  
+  const sliderContrast = document.getElementById('slider-contrast') as HTMLInputElement;
+  const displayContrast = document.getElementById('display-contrast') as HTMLSpanElement;
+  
+  const checkInvert = document.getElementById('check-invert') as HTMLInputElement;
+  const checkAspect = document.getElementById('check-aspect') as HTMLInputElement;
+  const checkColor = document.getElementById('check-color') as HTMLInputElement;
+  
+  const groupAspectRatio = document.getElementById('group-aspect-ratio') as HTMLDivElement;
+  const groupBrailleThreshold = document.getElementById('group-braille-threshold') as HTMLDivElement;
+  const groupAsciiRamp = document.getElementById('group-ascii-ramp') as HTMLDivElement;
+  
+  const sliderThreshold = document.getElementById('slider-threshold') as HTMLInputElement;
+  const displayThreshold = document.getElementById('display-threshold') as HTMLSpanElement;
+  const selectRamp = document.getElementById('select-ramp') as HTMLSelectElement;
+
+  const outputPlaceholder = document.getElementById('output-placeholder') as HTMLDivElement;
+  const outputCanvas = document.getElementById('output-canvas') as HTMLPreElement;
+  
+  const btnCopy = document.getElementById('btn-copy') as HTMLButtonElement;
+  const btnDownload = document.getElementById('btn-download') as HTMLButtonElement;
+  const btnZoomIn = document.getElementById('btn-zoom-in') as HTMLButtonElement;
+  const btnZoomOut = document.getElementById('btn-zoom-out') as HTMLButtonElement;
+  const btnReset = document.getElementById('btn-reset') as HTMLButtonElement;
+
+  // Initialize event listeners
+  if (dropzone && fileInput) {
+    dropzone.addEventListener('click', () => fileInput.click());
+    
+    // Drag and drop event listeners
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer?.files && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files[0]) {
+        handleFile(fileInput.files[0]);
+      }
+    });
+  }
+
+  // Handle removing image
+  if (btnRemoveImage) {
+    btnRemoveImage.addEventListener('click', () => {
+      resetGenerator();
+    });
+  }
+
+  // Handle Controls Interaction
+  const sliders = [
+    { input: sliderWidth, display: displayWidth },
+    { input: sliderBrightness, display: displayBrightness },
+    { input: sliderContrast, display: displayContrast },
+    { input: sliderThreshold, display: displayThreshold }
+  ];
+
+  sliders.forEach(({ input, display }) => {
+    if (input && display) {
+      input.addEventListener('input', () => {
+        display.textContent = input.value;
+        triggerConversion();
+      });
+    }
+  });
+
+  if (selectMode) {
+    selectMode.addEventListener('change', () => {
+      toggleModeSettings();
+      triggerConversion();
+    });
+  }
+
+  [checkInvert, checkAspect, checkColor, selectRamp].forEach(control => {
+    if (control) {
+      control.addEventListener('change', triggerConversion);
+    }
+  });
+
+  // Action Buttons
+  if (btnCopy) {
+    btnCopy.addEventListener('click', async () => {
+      if (!currentOutputText) return;
+      try {
+        // Create temp element to copy pure text (strips HTML if colorized is on)
+        const textToCopy = checkColor?.checked 
+          ? outputCanvas.innerText 
+          : currentOutputText;
+
+        await navigator.clipboard.writeText(textToCopy);
+        const originalText = btnCopy.innerHTML;
+        btnCopy.innerHTML = '<span>?뷂툘</span> Copied!';
+        btnCopy.classList.add('btn-primary');
+        setTimeout(() => {
+          btnCopy.innerHTML = originalText;
+          btnCopy.classList.remove('btn-primary');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
+    });
+  }
+
+  if (btnDownload) {
+    btnDownload.addEventListener('click', () => {
+      if (!currentOutputText) return;
+      const isColored = checkColor?.checked;
+      let blob: Blob;
+      let filename = 'text-art';
+
+      if (isColored) {
+        // Build a mini HTML page with styles for color mapping download
+        const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CharCraft Colorized Art</title>
+<style>
+  body {
+    background: #000;
+    color: #fff;
+    font-family: monospace;
+    font-size: 8px;
+    line-height: 1.0;
+    white-space: pre;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+${outputCanvas.innerHTML}
+</body>
+</html>`;
+        blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        filename += '.html';
+      } else {
+        blob = new Blob([currentOutputText], { type: 'text/plain;charset=utf-8' });
+        filename += '.txt';
+      }
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  if (btnZoomIn) {
+    btnZoomIn.addEventListener('click', () => {
+      adjustFontSize(1);
+    });
+  }
+
+  if (btnZoomOut) {
+    btnZoomOut.addEventListener('click', () => {
+      adjustFontSize(-1);
+    });
+  }
+
+  if (btnReset) {
+    btnReset.addEventListener('click', resetGenerator);
+  }
+
+  // Core Processing Functions
+  async function handleFile(file: File) {
+    if (isProcessing) return;
+    isProcessing = true;
+
+    try {
+      // Show loader / disable container
+      dropzone.style.display = 'none';
+      if (previewContainer && sourcePreview) {
+        previewContainer.style.display = 'block';
+        sourcePreview.src = 'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text y="50" x="10" fill="white">Loading...</text></svg>';
+      }
+
+      const img = await loadImageFromFile(file);
+      loadedImage = img;
+
+      if (sourcePreview && imgDimensions) {
+        sourcePreview.src = img.src;
+        imgDimensions.textContent = `${img.naturalWidth} x ${img.naturalHeight} px`;
+      }
+
+      // Unlock form controls
+      controlsForm.classList.remove('disabled');
+      
+      toggleModeSettings();
+      runConversion();
+    } catch (err) {
+      console.error(err);
+      alert('Error loading image. Please try another file.');
+      resetGenerator();
+    } finally {
+      isProcessing = false;
+    }
+  }
+
+  function toggleModeSettings() {
+    const mode = selectMode.value;
+    if (mode === 'ascii') {
+      if (groupBrailleThreshold) groupBrailleThreshold.style.display = 'none';
+      if (groupAsciiRamp) groupAsciiRamp.style.display = 'block';
+      if (groupAspectRatio) groupAspectRatio.style.display = 'flex';
+    } else {
+      if (groupBrailleThreshold) groupBrailleThreshold.style.display = 'block';
+      if (groupAsciiRamp) groupAsciiRamp.style.display = 'none';
+      if (groupAspectRatio) groupAspectRatio.style.display = 'none';
+    }
+  }
+
+  function triggerConversion() {
+    if (!loadedImage) return;
+    runConversion();
+  }
+
+  function runConversion() {
+    if (!loadedImage) return;
+
+    const mode = selectMode.value;
+    const width = parseInt(sliderWidth.value, 10);
+    const brightness = parseInt(sliderBrightness.value, 10);
+    const contrast = parseInt(sliderContrast.value, 10);
+    const invert = checkInvert.checked;
+    const colored = checkColor.checked;
+    
+    let resultText = '';
+
+    if (mode === 'ascii') {
+      const rampName = selectRamp.value as any;
+      const preserveAspect = checkAspect.checked;
+
+      // Courier standard monospace aspect correction factor ~ 0.55
+      const aspectCorrection = preserveAspect ? 0.52 : 1.0;
+      const height = Math.round(width * (loadedImage.naturalHeight / loadedImage.naturalWidth) * aspectCorrection);
+
+      try {
+        const imageData = getAdjustedImageData(loadedImage, {
+          width,
+          height,
+          brightness,
+          contrast,
+          invert
+        });
+
+        resultText = convertToAscii(imageData, { rampName, colored });
+      } catch (err) {
+        console.error('ASCII Conversion failed:', err);
+      }
+    } else if (mode === 'braille') {
+      const threshold = parseInt(sliderThreshold.value, 10);
+
+      // Braille maps a 2x4 pixel cell to one character.
+      // So high resolution canvas width = columns * 2
+      const canvasWidth = width * 2;
+      const canvasHeight = Math.round(canvasWidth * (loadedImage.naturalHeight / loadedImage.naturalWidth));
+
+      try {
+        const imageData = getAdjustedImageData(loadedImage, {
+          width: canvasWidth,
+          height: canvasHeight,
+          brightness,
+          contrast,
+          invert
+        });
+
+        resultText = convertToBraille(imageData, { threshold, colored });
+      } catch (err) {
+        console.error('Braille Conversion failed:', err);
+      }
+    }
+
+    currentOutputText = resultText;
+    renderOutput(resultText, colored);
+  }
+
+  function renderOutput(content: string, colored: boolean) {
+    if (outputPlaceholder) outputPlaceholder.style.display = 'none';
+    if (outputCanvas) {
+      outputCanvas.style.display = 'block';
+      if (colored) {
+        outputCanvas.innerHTML = content;
+      } else {
+        outputCanvas.textContent = content;
+      }
+    }
+  }
+
+  function adjustFontSize(delta: number) {
+    currentFontSize = Math.max(4, Math.min(24, currentFontSize + delta));
+    if (outputCanvas) {
+      outputCanvas.style.fontSize = `${currentFontSize}px`;
+      outputCanvas.style.lineHeight = '1.0';
+    }
+  }
+
+  function resetGenerator() {
+    loadedImage = null;
+    currentOutputText = '';
+    
+    // Reset file input & UI
+    if (fileInput) fileInput.value = '';
+    if (dropzone) dropzone.style.display = 'block';
+    if (previewContainer) previewContainer.style.display = 'none';
+    if (sourcePreview) sourcePreview.src = '';
+    
+    controlsForm.classList.add('disabled');
+    
+    // Reset control states
+    sliderWidth.value = '100';
+    displayWidth.textContent = '100';
+    sliderBrightness.value = '0';
+    displayBrightness.textContent = '0';
+    sliderContrast.value = '0';
+    displayContrast.textContent = '0';
+    checkInvert.checked = false;
+    checkColor.checked = false;
+    checkAspect.checked = true;
+    sliderThreshold.value = '127';
+    displayThreshold.textContent = '127';
+    
+    if (outputPlaceholder) outputPlaceholder.style.display = 'flex';
+    if (outputCanvas) {
+      outputCanvas.style.display = 'none';
+      outputCanvas.innerHTML = '';
+    }
+    
+    currentFontSize = 8;
+    if (outputCanvas) {
+      outputCanvas.style.fontSize = '8px';
+    }
+  }
+</script>

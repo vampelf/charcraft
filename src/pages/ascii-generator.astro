@@ -1,0 +1,37 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Generator from '../components/Generator.astro';
+---
+
+<MainLayout 
+  title="Convert Image to ASCII Art Online | CharCraft" 
+  description="Convert your photos and images into classic monospace ASCII text characters online. Adjust columns, contrast, brightness, and density settings."
+  activePath="ascii-generator"
+>
+  <div class="tool-page-header">
+    <h1>Image to <span class="gradient-text">ASCII Art</span> Generator</h1>
+    <p class="subtitle">Convert color or black-and-white photos into classic text-based character art directly in your browser.</p>
+  </div>
+
+  <Generator mode="ascii" />
+</MainLayout>
+
+<style>
+  .tool-page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
+  }
+</style>
