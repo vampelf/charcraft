@@ -1,5 +1,6 @@
 ---
 const currentYear = new Date().getFullYear();
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 ---
 
 <footer class="site-footer">
@@ -9,37 +10,29 @@ const currentYear = new Date().getFullYear();
         <h4 style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 1.25rem;">
           CharCraft
         </h4>
-        <p style="font-size: 0.85rem; line-height: 1.5; margin-top: 0.5rem; max-width: 250px;">
+        <p style="font-size: 0.85rem; line-height: 1.5; margin-top: 0.5rem; max-width: 250px;" data-i18n="footer-desc">
           Premium browser-based tool to convert images into stunning ASCII and Braille text art. 100% private, client-side, and free.
         </p>
       </div>
 
       <div class="footer-section">
-        <h4>Generators</h4>
+        <h4 data-i18n="footer-generators">Generators</h4>
         <ul>
-          <li><a href="/charcraft/ascii-generator">ASCII Art Maker</a></li>
-          <li><a href="/charcraft/braille-generator">Braille Art Maker</a></li>
-          <li><a href="/charcraft/combined-generator">Combined Image Generator</a></li>
+          <li><a href={baseUrl} data-i18n="nav-ascii">ASCII Art Maker</a></li>
+          <li><a href={`${baseUrl}braille-generator`} data-i18n="nav-braille">Braille Art Maker</a></li>
+          <li><a href={`${baseUrl}combined-generator`} data-i18n="nav-combined">Combined Image Generator</a></li>
         </ul>
       </div>
 
       <div class="footer-section">
-        <h4>Resources</h4>
+        <h4 data-i18n="footer-resources">Resources</h4>
         <ul>
-          <li><a href="/charcraft/articles/what-is-ascii-art">What is ASCII Art?</a></li>
-          <li><a href="/charcraft/articles/how-braille-art-works">How Braille Art Works</a></li>
-          <li><a href="/charcraft/articles/best-images-for-ascii-art">Best Images for ASCII Art</a></li>
+          <li><a href={`${baseUrl}articles/what-is-ascii-art`}>What is ASCII Art?</a></li>
+          <li><a href={`${baseUrl}articles/how-braille-art-works`}>How Braille Art Works</a></li>
+          <li><a href={`${baseUrl}articles/best-images-for-ascii-art`}>Best Images for ASCII Art</a></li>
         </ul>
       </div>
 
-      <div class="footer-section">
-        <h4>Legal & Info</h4>
-        <ul>
-          <li><a href="/charcraft/about">About Us</a></li>
-          <li><a href="/charcraft/privacy">Privacy Policy</a></li>
-          <li><a href="/charcraft/contact">Contact</a></li>
-        </ul>
-      </div>
     </div>
 
     <div class="footer-bottom">
@@ -47,7 +40,7 @@ const currentYear = new Date().getFullYear();
       <div style="display: flex; gap: 1rem;">
         <span style="font-size: 0.85rem; color: var(--accent-green); display: flex; align-items: center; gap: 0.25rem;">
           <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent-green); border-radius: 50%;"></span>
-          Fully Secure Client-Side Only
+          <span data-i18n="footer-secure">Fully Secure Client-Side Only</span>
         </span>
       </div>
     </div>

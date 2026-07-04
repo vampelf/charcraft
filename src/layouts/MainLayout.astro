@@ -17,6 +17,7 @@ const {
   activePath = "",
 } = Astro.props;
 
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://vampe.github.io/charcraft");
 ---
 
@@ -31,26 +32,32 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://vampe.gi
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl.href} />
-    <link rel="icon" type="image/x-icon" href="/charcraft/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href={`${baseUrl}favicon.ico`} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl.href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, canonicalUrl.origin + "/charcraft").href} />
+    <meta property="og:image" content={new URL(ogImage, canonicalUrl.origin + baseUrl).href} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalUrl.href} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(ogImage, canonicalUrl.origin + "/charcraft").href} />
+    <meta property="twitter:image" content={new URL(ogImage, canonicalUrl.origin + baseUrl).href} />
 
     <!-- AdSense & SEO Helper Tags (Optional/Configurable) -->
     <meta name="robots" content="index, follow" />
+    
+    <!-- AMP Auto Ads Loader -->
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
   </head>
   <body>
+    <!-- AMP Auto Ads Tag -->
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4316484120133133"></amp-auto-ads>
+
     <!-- Top Nav Header -->
     <Header activePath={activePath} />
 

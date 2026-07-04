@@ -59,10 +59,10 @@ export function convertToBraille(
         gSum += g;
         bSum += b;
 
-        // A pixel is "active" (drawn dot) if it is opaque and its luminance is below threshold (dark).
+        // A pixel is "active" (drawn dot) if it is opaque and its luminance is above or equal to threshold (bright).
         if (a > 0) {
           const luminance = getLuminance(r, g, b);
-          if (luminance < threshold) {
+          if (luminance >= threshold) {
             byte |= dot.bit;
           }
         }

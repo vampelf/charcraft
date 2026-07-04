@@ -11,22 +11,22 @@ const { mode = 'combined' } = Astro.props;
   <!-- Left Side: Upload and Settings Panel -->
   <div class="controls-side glass-card">
     <h3 style="margin-top: 0; margin-bottom: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; font-size: 1.3rem;">
-      <span>⚙️</span> Generator Controls
+      <span>⚙️</span> <span data-i18n="control-title">Generator Controls</span>
     </h3>
 
     <!-- Drag & Drop Zone -->
     <div id="dropzone" class="upload-zone">
       <div class="upload-icon">📁</div>
-      <p class="upload-text">Drag & drop your image here or <span class="browse-link">browse</span></p>
-      <p class="upload-subtext">Supports PNG, JPG, WEBP</p>
+      <p class="upload-text" data-i18n="upload-placeholder">Drag & drop your image here or <span class="browse-link">browse</span></p>
+      <p class="upload-subtext" data-i18n="upload-subtext">Supports PNG, JPG, WEBP</p>
       <input type="file" id="file-input" accept="image/*" style="display: none;" />
     </div>
 
     <!-- Image Preview (hidden initially) -->
     <div id="source-preview-container" class="source-preview-container" style="display: none;">
       <div class="preview-header">
-        <span>Original Image Preview</span>
-        <button id="btn-remove-image" class="remove-img-btn">&times; Remove</button>
+        <span data-i18n="original-preview">Original Image Preview</span>
+        <button id="btn-remove-image" class="remove-img-btn">&times; <span data-i18n="remove-image">Remove</span></button>
       </div>
       <img id="source-preview" src="" alt="Source preview" />
       <div id="image-dimensions" class="dimensions-tag">0 x 0 px</div>
@@ -37,7 +37,7 @@ const { mode = 'combined' } = Astro.props;
       <!-- Mode Selection (visible only for combined) -->
       {mode === 'combined' ? (
         <div class="form-group">
-          <label class="form-label" for="select-mode">Output Mode</label>
+          <label class="form-label" for="select-mode" data-i18n="control-mode">Output Mode</label>
           <select id="select-mode" class="select-input">
             <option value="ascii">ASCII Art</option>
             <option value="braille" selected>Braille Art</option>
@@ -50,7 +50,7 @@ const { mode = 'combined' } = Astro.props;
       <!-- Width Columns -->
       <div class="form-group">
         <label class="form-label" for="slider-width">
-          Columns (Width)
+          <span data-i18n="control-width">Columns (Width)</span>
           <span id="display-width" class="value-display">100</span>
         </label>
         <input type="range" id="slider-width" class="range-slider" min="20" max="240" step="2" value="100" />
@@ -59,7 +59,7 @@ const { mode = 'combined' } = Astro.props;
       <!-- Brightness -->
       <div class="form-group">
         <label class="form-label" for="slider-brightness">
-          Brightness
+          <span data-i18n="control-brightness">Brightness</span>
           <span id="display-brightness" class="value-display">0</span>
         </label>
         <input type="range" id="slider-brightness" class="range-slider" min="-100" max="100" step="1" value="0" />
@@ -68,7 +68,7 @@ const { mode = 'combined' } = Astro.props;
       <!-- Contrast -->
       <div class="form-group">
         <label class="form-label" for="slider-contrast">
-          Contrast
+          <span data-i18n="control-contrast">Contrast</span>
           <span id="display-contrast" class="value-display">0</span>
         </label>
         <input type="range" id="slider-contrast" class="range-slider" min="-100" max="100" step="1" value="0" />
@@ -76,7 +76,7 @@ const { mode = 'combined' } = Astro.props;
 
       <!-- Invert Colors -->
       <div class="switch-group">
-        <span class="switch-label">Invert Luminance / Colors</span>
+        <span class="switch-label" data-i18n="control-invert">Invert Luminance / Colors</span>
         <label class="switch-control">
           <input type="checkbox" id="check-invert" />
           <span class="slider-round"></span>
@@ -85,7 +85,7 @@ const { mode = 'combined' } = Astro.props;
 
       <!-- Preserve Aspect Ratio (ASCII only) -->
       <div class="switch-group" id="group-aspect-ratio">
-        <span class="switch-label">Preserve Visual Aspect</span>
+        <span class="switch-label" data-i18n="control-aspect">Preserve Visual Aspect</span>
         <label class="switch-control">
           <input type="checkbox" id="check-aspect" checked />
           <span class="slider-round"></span>
@@ -94,7 +94,7 @@ const { mode = 'combined' } = Astro.props;
 
       <!-- Color Output Switch -->
       <div class="switch-group">
-        <span class="switch-label">Color Output (HTML)</span>
+        <span class="switch-label" data-i18n="control-color">Color Output (HTML)</span>
         <label class="switch-control">
           <input type="checkbox" id="check-color" />
           <span class="slider-round"></span>
@@ -104,7 +104,7 @@ const { mode = 'combined' } = Astro.props;
       <!-- Braille Specific: Threshold Slider -->
       <div class="form-group" id="group-braille-threshold">
         <label class="form-label" for="slider-threshold">
-          Dot Contrast Threshold
+          <span data-i18n="control-threshold">Dot Contrast Threshold</span>
           <span id="display-threshold" class="value-display">127</span>
         </label>
         <input type="range" id="slider-threshold" class="range-slider" min="10" max="245" step="5" value="127" />
@@ -112,7 +112,7 @@ const { mode = 'combined' } = Astro.props;
 
       <!-- ASCII Specific: Character Ramp Selection -->
       <div class="form-group" id="group-ascii-ramp" style="display: none;">
-        <label class="form-label" for="select-ramp">Character Density</label>
+        <label class="form-label" for="select-ramp" data-i18n="control-density">Character Density</label>
         <select id="select-ramp" class="select-input">
           <option value="simple">Simple Ramp (10 characters)</option>
           <option value="standard" selected>Standard Ramp (69 characters)</option>
@@ -126,21 +126,21 @@ const { mode = 'combined' } = Astro.props;
   <div class="preview-side glass-card">
     <div class="output-header">
       <h3 style="margin: 0; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; font-size: 1.3rem;">
-        <span>🖼️</span> Generated Text Art
+        <span>🖼️</span> <span data-i18n="output-title">Generated Text Art</span>
       </h3>
       
       <!-- Output Actions -->
       <div class="action-buttons">
         <button id="btn-copy" class="btn btn-secondary btn-sm" title="Copy text to clipboard">
-          <span class="icon">📋</span> Copy
+          <span class="icon">📋</span> <span data-i18n="btn-copy">Copy</span>
         </button>
         <button id="btn-download" class="btn btn-secondary btn-sm" title="Download as .txt file">
-          <span class="icon">💾</span> Download
+          <span class="icon">💾</span> <span data-i18n="btn-download">Download</span>
         </button>
         <button id="btn-zoom-out" class="btn btn-secondary btn-sm btn-icon-only" title="Zoom Out font">A-</button>
         <button id="btn-zoom-in" class="btn btn-secondary btn-sm btn-icon-only" title="Zoom In font">A+</button>
         <button id="btn-reset" class="btn btn-secondary btn-sm" title="Clear and Reset">
-          <span>🔄</span> Reset
+          <span>🔄</span> <span data-i18n="btn-reset">Reset</span>
         </button>
       </div>
     </div>
@@ -148,7 +148,7 @@ const { mode = 'combined' } = Astro.props;
     <!-- Live Output Box -->
     <div class="output-wrapper">
       <div id="output-placeholder" class="output-placeholder">
-        <p>Please upload an image to generate text art.</p>
+        <p data-i18n="placeholder-text">Please upload an image to generate text art.</p>
       </div>
       <pre id="output-canvas" class="output-pre" style="font-size: 8px; line-height: 1.0; display: none;"></pre>
     </div>
@@ -340,6 +340,7 @@ const { mode = 'combined' } = Astro.props;
   import { loadImageFromFile, getAdjustedImageData } from '../utils/imageProcessor';
   import { convertToAscii } from '../utils/asciiConverter';
   import { convertToBraille } from '../utils/brailleConverter';
+  import { TRANSLATIONS } from '../utils/i18n';
 
   // State
   let loadedImage: HTMLImageElement | null = null;
@@ -465,7 +466,7 @@ const { mode = 'combined' } = Astro.props;
 
         await navigator.clipboard.writeText(textToCopy);
         const originalText = btnCopy.innerHTML;
-        btnCopy.innerHTML = '<span>?뷂툘</span> Copied!';
+        btnCopy.innerHTML = '<span>✓</span> Copied!';
         btnCopy.classList.add('btn-primary');
         setTimeout(() => {
           btnCopy.innerHTML = originalText;
@@ -569,7 +570,9 @@ ${outputCanvas.innerHTML}
       runConversion();
     } catch (err) {
       console.error(err);
-      alert('Error loading image. Please try another file.');
+      const lang = localStorage.getItem('charcraft-lang') || 'en';
+      const msg = TRANSLATIONS['alert-error']?.[lang as any] || 'Error loading image. Please try another file.';
+      alert(msg);
       resetGenerator();
     } finally {
       isProcessing = false;

@@ -10,12 +10,13 @@ interface Props {
 }
 
 const { title, description, publishDate = "July 2026", readTime = "5 min read", ogImage } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 ---
 
 <MainLayout title={`${title} | CharCraft Articles`} description={description} ogImage={ogImage} activePath="articles">
   <article class="article-content">
     <header class="article-header">
-      <a href="/charcraft/" class="back-link">
+      <a href={baseUrl} class="back-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>

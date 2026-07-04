@@ -4,6 +4,7 @@ interface Props {
 }
 
 const { activePath = "" } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 
 // Helper to determine if link is active
 const isActive = (path: string) => {
@@ -15,39 +16,157 @@ const isActive = (path: string) => {
 
 <header class="site-header">
   <div class="container nav-container">
-    <a href="/charcraft/" class="logo">
+    <a href={baseUrl} class="logo">
       <span>🎨</span> CharCraft
     </a>
     
-    <nav>
+    <nav style="display: flex; align-items: center; gap: 1.5rem;">
       <ul class="nav-links">
         <li>
-          <a href="/charcraft/" class={`nav-link ${isActive("") ? "active" : ""}`}>
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="/charcraft/ascii-generator" class={`nav-link ${isActive("ascii-generator") ? "active" : ""}`}>
+          <a href={baseUrl} class={`nav-link ${isActive("") ? "active" : ""}`} data-i18n="nav-ascii">
             ASCII Art
           </a>
         </li>
         <li>
-          <a href="/charcraft/braille-generator" class={`nav-link ${isActive("braille-generator") ? "active" : ""}`}>
+          <a href={`${baseUrl}braille-generator`} class={`nav-link ${isActive("braille-generator") ? "active" : ""}`} data-i18n="nav-braille">
             Braille Art
           </a>
         </li>
         <li>
-          <a href="/charcraft/combined-generator" class={`nav-link ${isActive("combined-generator") ? "active" : ""}`}>
+          <a href={`${baseUrl}combined-generator`} class={`nav-link ${isActive("combined-generator") ? "active" : ""}`} data-i18n="nav-combined">
             Combined
           </a>
         </li>
       </ul>
-    </nav>
 
-    <div>
-      <a href="/charcraft/combined-generator" class="cta-btn">
-        Launch App
-      </a>
-    </div>
+      <!-- Language Selector -->
+      <div class="lang-selector-container">
+        <span class="lang-icon">🌐</span>
+        <select id="lang-selector" class="lang-select" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="ko">한국어</option>
+          <option value="es">Español</option>
+          <option value="ja">日本語</option>
+          <option value="zh">简体中文</option>
+        </select>
+      </div>
+    </nav>
   </div>
 </header>
+
+<style>
+  .lang-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    transition: border-color var(--transition-fast);
+  }
+
+  .lang-selector-container:hover {
+    border-color: var(--text-muted);
+  }
+
+  .lang-icon {
+    font-size: 0.9rem;
+  }
+
+  .lang-select {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .lang-select option {
+    background: var(--bg-main);
+    color: var(--text-main);
+  }
+</style>
+
+<script>
+  import { TRANSLATIONS } from '../utils/i18n';
+
+  function applyLanguage(lang: any) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (key && TRANSLATIONS[key] && TRANSLATIONS[key][lang]) {
+        el.innerHTML = TRANSLATIONS[key][lang];
+      }
+    });
+
+    // Also translate any select ramp options
+    const selectRamp = document.getElementById('select-ramp') as HTMLSelectElement;
+    if (selectRamp) {
+      const options = selectRamp.options;
+      const simple = TRANSLATIONS['option-simple']?.[lang];
+      const standard = TRANSLATIONS['option-standard']?.[lang];
+      const detailed = TRANSLATIONS['option-detailed']?.[lang];
+      if (options[0] && simple) options[0].text = simple;
+      if (options[1] && standard) options[1].text = standard;
+      if (options[2] && detailed) options[2].text = detailed;
+    }
+
+    // Translate outputMode options in combined generator
+    const selectMode = document.getElementById('select-mode') as HTMLSelectElement;
+    if (selectMode && selectMode.tagName === 'SELECT') {
+      const options = selectMode.options;
+      const ascii = TRANSLATIONS['option-mode-ascii']?.[lang];
+      const braille = TRANSLATIONS['option-mode-braille']?.[lang];
+      if (options[0] && ascii) options[0].text = ascii;
+      if (options[1] && braille) options[1].text = braille;
+    }
+
+    // Translate buttons text
+    const btnCopy = document.getElementById('btn-copy');
+    if (btnCopy) {
+      const text = TRANSLATIONS['btn-copy']?.[lang];
+      if (text) btnCopy.innerHTML = `<span class="icon">📋</span> ${text}`;
+    }
+    const btnDownload = document.getElementById('btn-download');
+    if (btnDownload) {
+      const text = TRANSLATIONS['btn-download']?.[lang];
+      if (text) btnDownload.innerHTML = `<span class="icon">💾</span> ${text}`;
+    }
+    const btnReset = document.getElementById('btn-reset');
+    if (btnReset) {
+      const text = TRANSLATIONS['btn-reset']?.[lang];
+      if (text) btnReset.innerHTML = `<span>🔄</span> ${text}`;
+    }
+
+    // Trigger custom event so other components (like Generator) can react if needed
+    window.dispatchEvent(new CustomEvent('langChanged', { detail: { lang } }));
+  }
+
+  // Initialize
+  const langSelector = document.getElementById('lang-selector') as HTMLSelectElement;
+
+  let currentLang = localStorage.getItem('charcraft-lang');
+  if (!currentLang) {
+    const navLang = navigator.language.slice(0, 2);
+    currentLang = ['en', 'ko', 'es', 'ja', 'zh'].includes(navLang) ? navLang : 'en';
+  }
+
+  if (langSelector) {
+    langSelector.value = currentLang;
+    langSelector.addEventListener('change', (e) => {
+      const selectedLang = (e.target as HTMLSelectElement).value;
+      localStorage.setItem('charcraft-lang', selectedLang);
+      applyLanguage(selectedLang);
+    });
+  }
+
+  // Apply on load and after DOM content is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    applyLanguage(currentLang);
+  });
+  // Execute immediately since script is deferred and DOM is already parsed
+  applyLanguage(currentLang);
+</script>

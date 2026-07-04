@@ -1,125 +1,25 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-
-// Article Metadata for listing
-const articles = [
-  {
-    title: "What is ASCII Art? The History of Text Art",
-    description: "From early typewriters to computerized BBS networks, explore the origins and evolution of drawing with characters.",
-    url: "/charcraft/articles/what-is-ascii-art",
-    tag: "History",
-    readTime: "4 min read",
-  },
-  {
-    title: "How Unicode Braille Art Generation Works",
-    description: "Deep dive into the 2x4 dot matrix mapping algorithm that enables drawing high-density graphics in monospace text.",
-    url: "/charcraft/articles/how-braille-art-works",
-    tag: "Algorithm",
-    readTime: "6 min read",
-  },
-  {
-    title: "Best Images for ASCII Art Conversion",
-    description: "Learn how to select and prepare your source photos to generate clean, high-contrast, recognizable text representations.",
-    url: "/charcraft/articles/best-images-for-ascii-art",
-    tag: "Guide",
-    readTime: "5 min read",
-  }
-];
+import Generator from '../components/Generator.astro';
 ---
 
-<MainLayout title="CharCraft | Free Image to ASCII & Braille Art Generator">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <span class="badge">100% Client-Side & Secure</span>
-      <h1 class="hero-title">Transform Images into Beautiful <span class="gradient-text">Text Art</span></h1>
-      <p class="hero-desc">
-        Upload any image and instantly convert it into classic ASCII art or modern, high-density Unicode Braille patterns. Completely free, processed in your browser.
-      </p>
-      <div class="hero-actions">
-        <a href="/charcraft/combined-generator" class="btn btn-accent btn-lg">Launch Multi-Generator</a>
-        <a href="#tools" class="btn btn-secondary btn-lg">Explore Single Tools</a>
-      </div>
-    </div>
-  </section>
+<MainLayout 
+  title="Convert Image to ASCII Art Online | CharCraft" 
+  description="Convert your photos and images into classic monospace ASCII text characters online. Adjust columns, contrast, brightness, and density settings."
+  activePath=""
+>
+  <div class="tool-page-header">
+    <h1 data-i18n="ascii-title">Image to <span class="gradient-text">ASCII Art</span> Generator</h1>
+    <p class="subtitle" data-i18n="ascii-subtitle">Convert color or black-and-white photos into classic text-based character art directly in your browser.</p>
+  </div>
 
-  <!-- Tools Section -->
-  <section id="tools" class="tools-grid-section">
-    <h2 class="section-title">Select Your Generation Tool</h2>
-    <p class="section-desc">Choose a specialized generator or use the integrated combined suite.</p>
-    
-    <div class="tools-grid">
-      <!-- Tool 1: ASCII -->
-      <div class="glass-card tool-card">
-        <div class="tool-icon">📝</div>
-        <h3>ASCII Art Generator</h3>
-        <p>Convert pixels to characters using brightness ramps. Supports simple, standard, or detailed mappings with aspect-ratio preservation.</p>
-        <a href="/charcraft/ascii-generator" class="tool-link">Open ASCII Tool &rarr;</a>
-      </div>
-
-      <!-- Tool 2: Braille -->
-      <div class="glass-card tool-card">
-        <div class="tool-icon">⠶</div>
-        <h3>Braille Art Generator</h3>
-        <p>Utilize Unicode Braille dots in a 2x4 cell mapping. Ideal for high-density, sharp contours and recognizable line drawings.</p>
-        <a href="/charcraft/braille-generator" class="tool-link">Open Braille Tool &rarr;</a>
-      </div>
-
-      <!-- Tool 3: Combined -->
-      <div class="glass-card tool-card highlight-card">
-        <div class="tool-icon">⚡</div>
-        <h3>Combined Text Art Suite</h3>
-        <p>Switch dynamically between ASCII and Braille modes. Apply color rendering in HTML and configure full output controls simultaneously.</p>
-        <a href="/charcraft/combined-generator" class="tool-link font-weight-bold" style="color: var(--secondary);">Open Combined Suite &rarr;</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Articles/Resources Section -->
-  <section class="articles-section">
-    <h2 class="section-title">Informational Articles & Guides</h2>
-    <p class="section-desc">Learn the concepts, algorithms, and tips behind digital text art generation.</p>
-
-    <div class="articles-grid">
-      {articles.map(article => (
-        <article class="glass-card article-card">
-          <div class="article-meta">
-            <span class="article-tag">{article.tag}</span>
-            <span>{article.readTime}</span>
-          </div>
-          <h3 class="article-card-title">{article.title}</h3>
-          <p class="article-card-desc">{article.description}</p>
-          <a href={article.url} class="article-card-link">Read Article &rarr;</a>
-        </article>
-      ))}
-    </div>
-  </section>
+  <Generator mode="ascii" />
 </MainLayout>
 
 <style>
-  /* Hero styles */
-  .hero {
+  .tool-page-header {
     text-align: center;
-    padding: 4rem 1rem 6rem 1rem;
-    position: relative;
-  }
-
-  .badge {
-    background: hsla(263, 70%, 15%, 0.6);
-    border: 1px solid var(--border-color);
-    padding: 0.4rem 1rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--secondary);
-    display: inline-block;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .hero-title {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 
   .gradient-text {
@@ -128,144 +28,10 @@ const articles = [
     -webkit-text-fill-color: transparent;
   }
 
-  .hero-desc {
-    max-width: 650px;
-    margin: 0 auto 2.5rem auto;
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
+  .subtitle {
     color: var(--text-muted);
-    line-height: 1.6;
-  }
-
-  .hero-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-lg {
-    padding: 0.9rem 2rem;
-    font-size: 1.05rem;
-    border-radius: 0.75rem;
-  }
-
-  /* Section headers */
-  .section-title {
-    text-align: center;
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-    margin-top: 4rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .section-desc {
-    text-align: center;
-    color: var(--text-muted);
+    font-size: 1.1rem;
     max-width: 600px;
-    margin: 0 auto 3rem auto;
-    font-size: 1rem;
-  }
-
-  /* Tools grid */
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 5rem;
-  }
-
-  .tool-card {
-    display: flex;
-    flex-direction: column;
-    padding: 2.2rem;
-    height: 100%;
-  }
-
-  .tool-card h3 {
-    margin-top: 1rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .tool-card p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-  }
-
-  .tool-icon {
-    font-size: 2.2rem;
-  }
-
-  .tool-link {
-    font-weight: 600;
-    color: var(--primary);
-    transition: color var(--transition-fast);
-  }
-
-  .tool-link:hover {
-    color: var(--primary-hover);
-  }
-
-  .highlight-card {
-    border-color: hsla(263, 70%, 40%, 0.5);
-    background: linear-gradient(135deg, hsla(240, 10%, 8%, 0.8) 0%, hsla(263, 80%, 12%, 0.3) 100%);
-  }
-
-  .highlight-card:hover {
-    border-color: hsla(263, 70%, 55%, 0.8);
-  }
-
-  /* Articles section */
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 5rem;
-  }
-
-  .article-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 2rem;
-  }
-
-  .article-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-  }
-
-  .article-tag {
-    color: var(--secondary);
-  }
-
-  .article-card-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .article-card-desc {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-  }
-
-  .article-card-link {
-    font-weight: 600;
-    color: var(--secondary);
-    transition: color var(--transition-fast);
-  }
-
-  .article-card-link:hover {
-    color: var(--secondary-hover);
+    margin: 0.5rem auto 0 auto;
   }
 </style>
