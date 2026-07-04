@@ -51,13 +51,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://vampe.gi
     <!-- AdSense & SEO Helper Tags (Optional/Configurable) -->
     <meta name="robots" content="index, follow" />
     
-    <!-- AMP Auto Ads Loader -->
-    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <!-- Google AdSense Auto Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4316484120133133" crossorigin="anonymous"></script>
   </head>
   <body>
-    <!-- AMP Auto Ads Tag -->
-    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4316484120133133"></amp-auto-ads>
-
     <!-- Top Nav Header -->
     <Header activePath={activePath} />
 
