@@ -1,12 +1,32 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import Generator from '../components/Generator.astro';
+
+const faqs = [
+  {
+    question: "Is CharCraft safe to use? Does it save my images?",
+    answer: "Yes, CharCraft is 100% secure. Because all image processing runs purely client-side inside your browser via the HTML5 Canvas API, your files are never uploaded to any server. You can even run the site entirely offline."
+  },
+  {
+    question: "What is the difference between ASCII art and Braille art?",
+    answer: "ASCII art uses standard printable monospace characters mapped to the luminance of the pixels. Braille art uses Unicode Braille characters (U+2800 to U+28FF) representing a 2x4 dot grid, achieving 8 times the visual density of standard character mapping."
+  },
+  {
+    question: "Can I use the generated text art in GitHub READMEs or Discord?",
+    answer: "Yes! Both ASCII and Braille art are pure text. Simply copy the generated output and paste it inside a monospace code block in markdown files, terminal launch screens, or chat apps."
+  },
+  {
+    question: "Which images work best for ASCII conversion?",
+    answer: "Images with high contrast, clean/transparent backgrounds, and bold, distinct shapes work best. Avoid dark or busy pictures as they tend to produce digital noise."
+  }
+];
 ---
 
 <MainLayout 
   title="Convert Image to ASCII Art Online | CharCraft" 
   description="Convert your photos and images into classic monospace ASCII text characters online. Adjust columns, contrast, brightness, and density settings."
   activePath=""
+  faqs={faqs}
 >
   <div class="tool-page-header">
     <h1 data-i18n="ascii-title">Image to <span class="gradient-text">ASCII Art</span> Generator</h1>
@@ -14,6 +34,19 @@ import Generator from '../components/Generator.astro';
   </div>
 
   <Generator mode="ascii" />
+
+  <!-- FAQ Section for SEO & GEO -->
+  <section class="faq-section-container">
+    <h2 class="faq-section-title" data-i18n="faq-title">Frequently Asked Questions (FAQ)</h2>
+    <div class="faq-grid">
+      {faqs.map((faq, index) => (
+        <div class="glass-card faq-card">
+          <h3 class="faq-question" data-i18n={`faq-q${index + 1}`}>{faq.question}</h3>
+          <p class="faq-answer" data-i18n={`faq-a${index + 1}`}>{faq.answer}</p>
+        </div>
+      ))}
+    </div>
+  </section>
 </MainLayout>
 
 <style>
@@ -33,5 +66,53 @@ import Generator from '../components/Generator.astro';
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0.5rem auto 0 auto;
+  }
+
+  /* FAQ Styling */
+  .faq-section-container {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .faq-section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    background: linear-gradient(135deg, var(--text-main) 50%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .faq-card {
+    padding: 1.8rem;
+    border-color: var(--border-color);
+    transition: transform var(--transition-normal), border-color var(--transition-normal);
+  }
+
+  .faq-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-glow);
+  }
+
+  .faq-question {
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .faq-answer {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 </style>

@@ -341,6 +341,7 @@ const { mode = 'combined' } = Astro.props;
   import { convertToAscii } from '../utils/asciiConverter';
   import { convertToBraille } from '../utils/brailleConverter';
   import { TRANSLATIONS } from '../utils/i18n';
+  import type { Language } from '../utils/i18n';
 
   // State
   let loadedImage: HTMLImageElement | null = null;
@@ -570,8 +571,8 @@ ${outputCanvas.innerHTML}
       runConversion();
     } catch (err) {
       console.error(err);
-      const lang = localStorage.getItem('charcraft-lang') || 'en';
-      const msg = TRANSLATIONS['alert-error']?.[lang as any] || 'Error loading image. Please try another file.';
+      const lang = (localStorage.getItem('charcraft-lang') || 'en') as Language;
+      const msg = TRANSLATIONS['alert-error']?.[lang] || 'Error loading image. Please try another file.';
       alert(msg);
       resetGenerator();
     } finally {

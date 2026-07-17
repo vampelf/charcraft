@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -8,6 +9,9 @@ interface Props {
   description?: string;
   ogImage?: string;
   activePath?: string;
+  publishDate?: string;
+  readTime?: string;
+  faqs?: Array<{ question: string; answer: string }>;
 }
 
 const {
@@ -15,10 +19,13 @@ const {
   description = "Convert your images into beautiful, high-quality ASCII art and Unicode Braille patterns. Purely client-side, fast, and secure text art generator.",
   ogImage = "/images/og-default.png",
   activePath = "",
+  publishDate,
+  readTime,
+  faqs,
 } = Astro.props;
 
 const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://vampe.github.io/charcraft");
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://vampelf.github.io");
 ---
 
 <!DOCTYPE html>
@@ -52,7 +59,17 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://vampe.gi
     <meta name="robots" content="index, follow" />
     
     <!-- Google AdSense Auto Ads -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4316484120133133" crossorigin="anonymous"></script>
+    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4316484120133133" crossorigin="anonymous"></script>
+
+    <!-- Schema Markup -->
+    <SchemaMarkup
+      title={title}
+      description={description}
+      activePath={activePath}
+      publishDate={publishDate}
+      readTime={readTime}
+      faqs={faqs}
+    />
   </head>
   <body>
     <!-- Top Nav Header -->

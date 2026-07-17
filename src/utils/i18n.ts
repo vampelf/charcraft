@@ -322,5 +322,70 @@ export const TRANSLATIONS: Record<string, Record<Language, string>> = {
     es: 'Error al cargar la imagen. Por favor intenta con otro archivo.',
     ja: '画像の読み込み中にエラーが発生しました。別のファイルを試してください。',
     zh: '加载图像时出错。请尝试其他文件。'
+  },
+  
+  // FAQs
+  'faq-title': {
+    en: 'Frequently Asked Questions (FAQ)',
+    ko: '자주 묻는 질문 (FAQ)',
+    es: 'Preguntas Frecuentes (FAQ)',
+    ja: 'よくあるご質問 (FAQ)',
+    zh: '常见问题 (FAQ)'
+  },
+  'faq-q1': {
+    en: 'Is CharCraft safe to use? Does it save my images?',
+    ko: 'CharCraft는 안전한가요? 제 이미지가 저장되나요?',
+    es: '¿Es seguro usar CharCraft? ¿Guarda mis imágenes?',
+    ja: 'CharCraftは安全ですか？画像は保存されますか？',
+    zh: 'CharCraft 安全吗？它会保存我的图像吗？'
+  },
+  'faq-a1': {
+    en: 'Yes, CharCraft is 100% secure. Because all image processing runs purely client-side inside your browser via the HTML5 Canvas API, your files are never uploaded to any server. You can even run the site entirely offline.',
+    ko: '네, CharCraft는 100% 안전합니다. 모든 이미지 처리는 HTML5 Canvas API를 통해 브라우저 내부에서 순수하게 클라이언트 사이드로 실행되므로 파일이 서버로 전송되지 않습니다. 오프라인에서도 완전히 작동합니다.',
+    es: 'Sí, CharCraft es 100% seguro. Debido a que todo el procesamiento de imágenes se ejecuta puramente en el lado del cliente dentro de tu navegador a través de la API HTML5 Canvas, tus archivos nunca se suben a ningún servidor. Incluso puedes ejecutar el sitio completamente sin conexión.',
+    ja: 'はい、CharCraftは100%安全です。すべての画像処理はHTML5 Canvas APIを介してブラウザ内のクライアントサイドで実行されるため、ファイルがサーバーにアップロードされることはありません。オフラインでも完全にご利用いただけます。',
+    zh: '是的，CharCraft 100% 安全。因为所有图像处理均通过 HTML5 Canvas API 在浏览器端本地运行，您的文件绝不会被上传到 any 服务器。您甚至可以完全离线运行本站。'
+  },
+  'faq-q2': {
+    en: 'What is the difference between ASCII art and Braille art?',
+    ko: 'ASCII 아트와 점자 아트의 차이점은 무엇인가요?',
+    es: '¿Cuál es la diferencia entre el arte ASCII y el arte Braille?',
+    ja: 'ASCIIアートと点字アートの違いは何ですか？',
+    zh: 'ASCII 艺术与盲文艺术有什么区别？'
+  },
+  'faq-a2': {
+    en: 'ASCII art uses standard printable monospace characters mapped to the luminance of the pixels. Braille art uses Unicode Braille characters (U+2800 to U+28FF) representing a 2x4 dot grid, achieving 8 times the visual density of standard character mapping.',
+    ko: 'ASCII 아트는 픽셀의 밝기에 대응되는 표준 고정폭 문자(알파벳, 숫자, 기호)를 사용합니다. 반면 점자 아트는 2x4 점 격자를 나타내는 유니코드 점자 문자(U+2800~U+28FF)를 사용하여 표준 문자 매핑보다 8배 더 높은 시각적 밀도를 표현할 수 있습니다.',
+    es: 'El arte ASCII utiliza caracteres monoespaciados imprimibles estándar asignados a la luminancia de los píxeles. El arte Braille utiliza caracteres Braille Unicode (U+2800 a U+28FF) que representan una cuadrícula de puntos de 2x4, logrando 8 veces la densidad visual del mapeo de caracteres estándar.',
+    ja: 'ASCIIアートは、ピクセルの輝度に合わせて標準的な等幅文字（英数字・記号）をマッピングします。点字アートは、2x4のドットグリッドを表すUnicode点字文字（U+2800〜U+28FF）を使用するため、通常の文字マッピングの8倍の視覚的密度を実現できます。',
+    zh: 'ASCII 艺术使用映射到像素亮度的标准可打印等幅字符。盲文艺术则使用表示 2x4 点阵的 Unicode 盲文 Gap 字符（U+2800 至 U+28FF），可实现 8 倍于标准字符映射的视觉密度。'
+  },
+  'faq-q3': {
+    en: 'Can I use the generated text art in GitHub READMEs or Discord?',
+    ko: '생성된 텍스트 아트를 GitHub README나 디스코드에서 사용할 수 있나요?',
+    es: '¿Puedo usar el arte de texto generado en los README de GitHub o en Discord?',
+    ja: '生成されたテキストアートをGitHubのREADMEやDiscordで使用できますか？',
+    zh: '我可以在 GitHub README 或 Discord 中使用生成的文本艺术吗？'
+  },
+  'faq-a3': {
+    en: 'Yes! Both ASCII and Braille art are pure text. Simply copy the generated output and paste it inside a monospace code block in markdown files, terminal launch screens, or chat apps.',
+    ko: '네! ASCII 및 점자 아트는 모두 순수한 텍스트입니다. 생성된 결과물을 복사하여 마크다운 파일의 고정폭 코드 블록(```), 터미널 시작 화면 또는 디스코드와 같은 채팅 앱에 붙여넣기만 하면 됩니다.',
+    es: '¡Sí! Tanto el arte ASCII como el Braille son texto puro. Simplemente copia el resultado generado y pégalo dentro de un bloque de código monoespaciado en archivos markdown, pantallas de inicio de terminal o aplicaciones de chat.',
+    ja: 'はい！ASCIIアートも点字アートも純粋なテキストです。生成された出力をコピーして、Markdownファイルの等幅コードブロック（```）、ターミナル起動画面、またはDiscordなどのチャットアプリに貼り付けるだけです。',
+    zh: '是的！ASCII 和盲文艺术都是纯文本。只需复制生成的输出并将其粘贴到 Markdown 文件、终端启动屏幕或聊天软件中的等幅代码块中即可。'
+  },
+  'faq-q4': {
+    en: 'Which images work best for ASCII conversion?',
+    ko: 'ASCII 변환에 가장 적합한 이미지는 어떤 것인가요?',
+    es: '¿Qué imágenes funcionan mejor para la conversión a ASCII?',
+    ja: 'ASCII変換に最適な画像はどのようなものですか？',
+    zh: '哪些图像最适合进行 ASCII 转换？'
+  },
+  'faq-a4': {
+    en: 'Images with high contrast, clean/transparent backgrounds, and bold, distinct shapes work best. Avoid dark or busy pictures as they tend to produce digital noise.',
+    ko: '대비가 높고, 배경이 단색이거나 투명하며, 굵고 선명한 형태를 가진 이미지가 가장 잘 변환됩니다. 어둡거나 복잡한 배경의 이미지는 변환 시 노이즈가 발생하기 쉬우므로 피하는 것이 좋습니다.',
+    es: 'Las imágenes con alto contraste, fondos limpios o transparentes y formas audaces y distintas funcionan mejor. Evita fotos oscuras o con muchos detalles, ya que tienden a producir ruido digital.',
+    ja: '高コントラストで、背景がすっきりしている（または透明な）画像、および太くはっきりとした形状の画像が最適です。暗い画像や背景がごちゃごちゃした画像はノイズが発生しやすいため避けてください。',
+    zh: '高对比度、干净或透明背景以及轮廓清晰分明的图像效果最佳。避免使用过于阴暗或细节过于繁杂的图片，因为它们在转换时容易产生数码噪点。'
   }
 };

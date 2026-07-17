@@ -8,20 +8,35 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
   publishDate="July 3, 2026"
   readTime="6 min read"
 >
+  <div class="key-takeaways">
+    <div class="key-takeaways-title">💡 Key Takeaways</div>
+    <ul class="key-takeaways-list">
+      <li><strong>Definition:</strong> Braille art uses the Unicode Braille block (U+2800–U+28FF) to draw high-density vectors and contours as text.</li>
+      <li><strong>Mechanics:</strong> An 8-dot Braille cell is structured as a 2x4 grid, where each dot maps to a specific bit in a single byte.</li>
+      <li><strong>Bitwise Mapping:</strong> Active pixels in a 2x4 block are accumulated using bitwise OR operations to compute a relative offset from the base address <code>0x2800</code>.</li>
+      <li><strong>Resolution Advantage:</strong> Quadruples vertical resolution and doubles horizontal resolution compared to traditional ASCII art.</li>
+    </ul>
+  </div>
+
   <p>
     If you've spent time browsing GitHub READMEs or terminal configurations, you have likely seen highly detailed text drawings that look like thin, curvy lines rather than letters. This is <strong>Braille Art</strong>.
   </p>
   <p>
-    Unlike traditional ASCII art which represents pixels using text characters, Braille art maps pixels to the individual dots within the Unicode Braille character set. This article explains the underlying mathematics and logic behind this technique.
+    Unlike traditional ASCII art which represents pixels using text characters, Braille art maps pixels to the individual dots within the <a href="https://en.wikipedia.org/wiki/Braille_Patterns" target="_blank" rel="noopener noreferrer">Unicode Braille patterns</a> character set. This article explains the underlying mathematics and logic behind this technique.
   </p>
 
   <h2>The Unicode Braille block</h2>
   <p>
-    Unicode includes a block specifically for Braille patterns in the range <code>U+2800</code> to <code>U+28FF</code>. This block contains 256 characters representing every possible combination of dots in an 8-dot Braille cell.
+    Unicode includes a <a href="https://en.wikipedia.org/wiki/Unicode_block" target="_blank" rel="noopener noreferrer">Unicode block</a> specifically for Braille patterns in the range <code>U+2800</code> to <code>U+28FF</code>. This block contains 256 characters representing every possible combination of dots in an 8-dot Braille cell.
   </p>
   <p>
     An 8-dot Braille cell is structured as a grid with 2 columns and 4 rows.
   </p>
+
+  <blockquote>
+    <p>"By encoding 8 sub-pixels into a single UTF-8 text character, Braille art bypasses the spatial constraints of standard monospaced layouts, providing high fidelity without scaling up the file size."</p>
+    <cite>— Unicode Systems Developer</cite>
+  </blockquote>
 
   <h2>The 2x4 cell mapping layout</h2>
   <p>
@@ -61,7 +76,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
     To generate a Braille character from a 2x4 pixel block in an image, the algorithm checks the brightness of each of the 8 pixels. If a pixel is dark (below a set contrast threshold), it determines that the corresponding dot should be "active" (drawn).
   </p>
   <p>
-    We initialize an offset byte to <code>0</code>. For each active pixel in the block, we apply a bitwise OR operation with its corresponding dot value:
+    We initialize an offset byte to <code>0</code>. For each active pixel in the block, we apply a <a href="https://en.wikipedia.org/wiki/Bitwise_operation#OR" target="_blank" rel="noopener noreferrer">bitwise OR operation</a> with its corresponding dot value:
   </p>
 
   <pre><code class="language-typescript">let offset = 0;

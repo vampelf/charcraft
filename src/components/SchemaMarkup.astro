@@ -1,0 +1,136 @@
+---
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  activePath?: string;
+  publishDate?: string;
+  readTime?: string;
+  faqs?: FAQ[];
+}
+
+const {
+  title,
+  description,
+  activePath = "",
+  publishDate,
+  faqs
+} = Astro.props;
+
+const siteUrl = "https://vampelf.github.io";
+const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+// 1. WebSite Schema (All pages)
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "CharCraft",
+  "url": siteUrl,
+  "description": "Convert images into beautiful, high-quality ASCII art and Unicode Braille patterns.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": `${siteUrl}/?q={search_term_string}`,
+    "query-input": "required name=search_term_string"
+  }
+};
+
+// 2. WebApplication (SoftwareApplication) Schema for generator pages
+let appSchema: any = null;
+if (activePath === "" || activePath === "braille-generator" || activePath === "combined-generator") {
+  let appName = "CharCraft ASCII Art Generator";
+  let appUrl = siteUrl;
+  let appCategory = "MultimediaApplication";
+  let appDesc = description;
+  
+  if (activePath === "braille-generator") {
+    appName = "CharCraft Braille Art Generator";
+    appUrl = `${siteUrl}/braille-generator`;
+  } else if (activePath === "combined-generator") {
+    appName = "CharCraft Combined Text Art Generator";
+    appUrl = `${siteUrl}/combined-generator`;
+  }
+  
+  appSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": appName,
+    "url": appUrl,
+    "description": appDesc,
+    "applicationCategory": appCategory,
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas support.",
+    "screenshot": `${siteUrl}/images/og-default.png`,
+    "creator": {
+      "@type": "Organization",
+      "name": "CharCraft Team",
+      "url": siteUrl
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+}
+
+// 3. TechArticle / BlogPosting Schema for articles
+let articleSchema: any = null;
+if (Astro.url.pathname.includes("/articles/")) {
+  articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": title,
+    "description": description,
+    "image": `${siteUrl}/images/og-default.png`, // default or fallback
+    "datePublished": publishDate ? new Date(publishDate).toISOString() : new Date("2026-07-03").toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": "CharCraft Editorial Team",
+      "url": `${siteUrl}/about`
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CharCraft",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${siteUrl}/favicon.svg`
+      }
+    },
+    "mainEntityOfPage": currentUrl,
+    "inLanguage": "en"
+  };
+}
+
+// 4. FAQPage Schema
+let faqSchema: any = null;
+if (faqs && faqs.length > 0) {
+  faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+}
+---
+
+<!-- WebSite Schema -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
+<!-- WebApplication Schema -->
+{appSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(appSchema)} />}
+
+<!-- Article Schema -->
+{articleSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
+
+<!-- FAQ Schema -->
+{faqSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
