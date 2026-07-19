@@ -48,10 +48,10 @@ if (activePath === "" || activePath === "braille-generator" || activePath === "c
   
   if (activePath === "braille-generator") {
     appName = "CharCraft Braille Art Generator";
-    appUrl = `${siteUrl}/braille-generator`;
+    appUrl = `${siteUrl}/braille-generator/`;
   } else if (activePath === "combined-generator") {
     appName = "CharCraft Combined Text Art Generator";
-    appUrl = `${siteUrl}/combined-generator`;
+    appUrl = `${siteUrl}/combined-generator/`;
   }
   
   appSchema = {
@@ -90,7 +90,7 @@ if (Astro.url.pathname.includes("/articles/")) {
     "author": {
       "@type": "Person",
       "name": "CharCraft Editorial Team",
-      "url": `${siteUrl}/about`
+      "url": `${siteUrl}/about/`
     },
     "publisher": {
       "@type": "Organization",

@@ -6,5 +6,6 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://vampelf.github.io',
   base: '/',
+  trailingSlash: 'always',
   integrations: [sitemap()],
 });
